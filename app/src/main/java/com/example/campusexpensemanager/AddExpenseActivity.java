@@ -117,7 +117,13 @@ public class AddExpenseActivity extends AppCompatActivity {
             return;
         }
 
-        double amount = Double.parseDouble(amountStr);
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         SQLiteDatabase db = dbHepler.getWritableDatabase();
         ContentValues values = new ContentValues();

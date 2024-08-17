@@ -129,12 +129,11 @@ public class EditExpenseActivity extends AppCompatActivity {
     private void saveExpense() {
         String description = editDescription.getText().toString().trim();
         String date = editDate.getText().toString().trim();
-        double amount = 0.0;
+        double amount = 0;
 
         try {
             amount = Double.parseDouble(editAmount.getText().toString().trim());
         } catch (NumberFormatException e) {
-            // Xử lý lỗi nếu giá trị không phải là số hợp lệ
             Toast.makeText(this, "Invalid amount", Toast.LENGTH_SHORT).show();
             return;
         }
