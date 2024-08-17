@@ -1,6 +1,8 @@
 package com.example.campusexpensemanager;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,15 +18,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.campusexpensemanager.DatabaseSQLite.ExpenseDB;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class EditExpenseActivity extends AppCompatActivity {
     private EditText editDescription;
     private EditText editDate;
     private EditText editAmount;
     private Button btnSave;
+    private Button btnBack;
 
     private ExpenseDB dbHepler;
     private int expenseId = -1;
+    private Calendar calendar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +43,10 @@ public class EditExpenseActivity extends AppCompatActivity {
         editDate = findViewById(R.id.edit_date);
         editAmount = findViewById(R.id.edit_amount);
         btnSave = findViewById(R.id.button_save);
+        btnBack = findViewById(R.id.edit_back);
 
         dbHepler = new ExpenseDB(this);
+        calendar = Calendar.getInstance();
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("expense_id")) {
@@ -48,6 +59,21 @@ public class EditExpenseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 saveExpense();
                 finish();
+            }
+        });
+
+        editDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimePicker();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditExpenseActivity.this, ExpenseTracking.class);
+                startActivity(intent) ;
             }
         });
     }
@@ -67,6 +93,37 @@ public class EditExpenseActivity extends AppCompatActivity {
         }
 
         cursor.close();
+    }
+
+    private void showDateTimePicker() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, year, month, dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(
+                            EditExpenseActivity.this,
+                            (view1, hourOfDay, minute) -> {
+                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calendar.set(Calendar.MINUTE, minute);
+
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                                editDate.setText(dateFormat.format(calendar.getTime()));
+                            },
+                            calendar.get(Calendar.HOUR_OF_DAY),
+                            calendar.get(Calendar.MINUTE),
+                            true
+                    );
+                    timePickerDialog.show();
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
     }
 
     private void saveExpense() {

@@ -3,15 +3,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="121dp"
+        android:layout_height="62dp"
+        android:layout_gravity="start"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="Logo"
+        android:src="@drawable/logo_btec"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
-        android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="32dp" />
 
@@ -55,7 +64,8 @@
         android:id="@+id/btnRegisterSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
+        android:text="@string/create_account"
         android:textColor="@android:color/white"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:backgroundTint="@color/orange"/>
 </LinearLayout>

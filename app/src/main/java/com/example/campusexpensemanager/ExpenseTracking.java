@@ -32,6 +32,7 @@ public class ExpenseTracking extends AppCompatActivity {
     private ExpenseAdapter expenseAdapter;
     private ListView listView;
     private List<Expense> expenseList;
+    private Button buttonback;
 
     private ExpenseDB dbHelper;
 
@@ -51,6 +52,7 @@ public class ExpenseTracking extends AppCompatActivity {
         expenseList = new ArrayList<>();
         expenseAdapter = new ExpenseAdapter(this, expenseList);
         recycleviewexpense.setAdapter(expenseAdapter);
+        buttonback = findViewById(R.id.button_back);
 
         dbHelper = new ExpenseDB(this);
 
@@ -58,6 +60,14 @@ public class ExpenseTracking extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ExpenseTracking.this, AddExpenseActivity.class);
+                startActivity(intent) ;
+            }
+        });
+
+        buttonback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExpenseTracking.this, MainActivity.class);
                 startActivity(intent) ;
             }
         });
